@@ -1,26 +1,19 @@
 @import "tailwindcss";
+@import "primereact/resources/themes/viva-dark/theme.css";
+@import 'primeicons/primeicons.css';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+:root{
+    --primary-color: #7654d4;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.container {
+    /*max-width: 960px;*/
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.content-box {
+    @apply px-4 py-2 bg-[var(--surface-card)] border-2 border-[var(--surface-border)] rounded-xl
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.t {
+    @apply h-10 bg-red-500 w-full
 }
