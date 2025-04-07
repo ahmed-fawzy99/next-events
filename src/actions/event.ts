@@ -4,6 +4,7 @@ import {auth} from "@/auth";
 import z from 'zod';
 import {prisma} from "@/prisma";
 import type {Event} from "@prisma/client";
+import {revalidatePath} from "next/cache";
 
 
 interface CreateNewEventFormState {
@@ -89,6 +90,8 @@ export async function createEvent(
             }
         }
     }
+
+    revalidatePath(`/dashboard`);
 
     return {
         errors: {},

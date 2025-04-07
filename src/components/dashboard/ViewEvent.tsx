@@ -4,14 +4,33 @@ import type {Event} from "@prisma/client";
 interface ViewEventProps {
     event: Event | null;
     onClose: () => void;
+    className?: string;
 }
-export default function ViewEvent({event, onClose}: ViewEventProps) {
+export default function ViewEvent({event, onClose, className}: ViewEventProps) {
     if(event) {
         return (
-            <div>
+            <div className={className}>
                 <div className="flex justify-between items-center">
                     <h2 className="!mx-0 mb-2">Event <span className="italic">{event?.title}</span></h2>
                     <span className="pi pi-times cursor-pointer" onClick={() => onClose()}/>
+                </div>
+                <div className="flex flex-col gap-2 overflow-y-auto">
+                    <h3 className={`font-semibold text-${event.Etiquette}-500`}>{event.title}</h3>
+                    <p className="font-mono italic">{event.description}</p>
+                    <p className="inline-flex gap-1 items-center">
+                        <span className="pi pi-clock"/>
+                        {event.location}
+                    </p>
+                    <div className="flex justify-between gap-2 text-[var(--text-color-secondary)] text-sm">
+
+                        <p>{event.end ? 'Start' : 'Date'}: {event.start.toDateString()}</p>
+
+                        {
+                            event.end && (
+                                <p>End: {event.end.toDateString()}</p>
+                            )
+                        }
+                    </div>
                 </div>
 
             </div>
