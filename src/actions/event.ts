@@ -3,6 +3,8 @@
 import {auth} from "@/auth";
 import z from 'zod';
 import {prisma} from "@/prisma";
+import type {Event} from "@prisma/client";
+
 
 interface CreateNewEventFormState {
     errors: {
@@ -16,18 +18,19 @@ interface CreateNewEventFormState {
     values?: {
         title?: string;
         description?: string;
-        date?: Date[];
+        date?: (Date | null)[] | null;
         location?: string;
         color?: string;
     };
+    message?: string;
 }
 
 export async function createEvent(
+    dateRange: (Date | null)[] | null,
     formState: CreateNewEventFormState,
     formData: FormData
 ): Promise<CreateNewEventFormState>
 {
-    console.log(FormData.prototype.getAll.call(formData, 'date'))
     const session = await auth();
     if (!session?.user?.id)
         return {errors: {_form: ['You must be logged in to create an event']}};
@@ -40,15 +43,15 @@ export async function createEvent(
         color: z.string(),
     })
 
+    dateRange = dateRange?.filter((date) => date !== null) || null;
+
     const formValues = {
         title: formData.get('title') as string,
         description: formData.get('description') as string,
-        date: formData.get('date'),
+        date: dateRange,
         location: formData.get('location') as string,
         color: formData.get('color') as string,
     }
-    console.log(formValues.date)
-
     const res = schema.safeParse(formValues);
 
     if (!res.success) {
@@ -64,8 +67,8 @@ export async function createEvent(
             data: {
                 title: res.data.title,
                 description: res.data.description,
-                start: res.data.date,
-                end: res.data.date,
+                start: res.data.date[0],
+                end: res.data.date[1] ?? null,
                 location: res.data.location,
                 Etiquette: res.data.color,
                 userId: session.user.id,
@@ -89,5 +92,22 @@ export async function createEvent(
 
     return {
         errors: {},
+        message: 'Event created successfully',
     };
+}
+
+
+export async function getMyEvents(): Promise<Event[]> {
+    const session = await auth();
+    if (!session?.user?.id)
+        return [];
+
+    return prisma.event.findMany({
+        where: {
+            userId: session.user.id ,
+        },
+        orderBy: {
+            start: 'asc',
+        },
+    });
 }

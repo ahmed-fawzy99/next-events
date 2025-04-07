@@ -6,17 +6,27 @@
     --primary-color: #7654d4;
 }
 
-/*.container {*/
-    /*max-width: 960px;*/
-/*}*/
+
+html {
+    overflow: scroll; /* Allow scrolling */
+}
+
+::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+}
+* {
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
 
 .content-box {
-    @apply px-4 py-2 bg-[var(--surface-card)] border-2 border-[var(--surface-border)] rounded-xl
+    @apply p-4 bg-[var(--surface-card)] border-2 border-[var(--surface-border)] rounded-xl
 }
 
-h1 {
+h1, h2 {
     @apply text-xl font-semibold text-[var(--text-color)] ms-2
 }
+
+
 
 .pv-form-input {
     @apply flex flex-col w-full

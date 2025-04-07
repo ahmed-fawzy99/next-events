@@ -1,10 +1,12 @@
 'use client';
 import {redirect} from "next/navigation";
 import { useSession } from "next-auth/react"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import CreateEvent from "@/components/dashboard/CreateEvent";
 import EventCalendar from "@/components/home/EventCalendar";
-
+import MyEvents from "@/components/dashboard/MyEvents";
+import type {Event} from "@prisma/client";
+import ViewEvent from "@/components/dashboard/ViewEvent";
 // interface Event {
 //     id: number;
 //     title: string;
@@ -16,33 +18,32 @@ export default function Dashboard() {
     if (!session?.user?.email) {
         redirect('/auth')
     }
-    const [selectedStatus, setSelectedStatus] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState<Event|null>(null);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        setIsMobile(window.innerWidth <= 768);
+    }, []);
 
     return (
-        <div className="flex flex-col gap-4 h-full">
+        <div className="flex flex-col gap-4">
             <section className="grid grid-cols-3 gap-4">
-                <div className="content-box">
-                    My Events
-                    <button className="bg-red-500 p-4"
-                        onClick={() => {
-                            setSelectedStatus(!selectedStatus);}
-                    }
-                    >Toggle event</button>
+                <div className="content-box  overflow-y-scroll">
+                    <MyEvents onSelect={setSelectedEvent}/>
                 </div>
-                <div className="col-span-2 grid grid-cols-2 flex  gap-4">
-                    {/*Actually, Make Create take it all, but when i click on an event, make create take 1 col span only*/}
-                    <div className={`content-box ${selectedStatus ? 'col-span-1' : 'hidden'}`}>
-                        View
+                <div className="col-span-2 grid grid-cols-2 flex gap-4">
+                    <div className={`content-box ${selectedEvent ? 'col-span-1' : 'hidden'}`}>
+                        <ViewEvent event={selectedEvent} onClose={() => setSelectedEvent(null)}/>
                     </div>
-                    <div className={`content-box col-span-${selectedStatus ? '1' : '2'}`}>
+                    <div className={`content-box col-span-${selectedEvent ? '1' : '2'}`}>
                         <CreateEvent mode="create"/>
                     </div>
                 </div>
             </section>
 
-            <section className="flex h-full">
+            <section className="flex">
                 <div className="content-box w-full">
-                    <EventCalendar />
+                    <EventCalendar numberOfMonths={isMobile ? 1 : 2}/>
                 </div>
             </section>
         </div>

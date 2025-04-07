@@ -67,7 +67,7 @@ CREATE TABLE "Event" (
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "start" DATETIME NOT NULL,
-    "end" DATETIME NOT NULL,
+    "end" DATETIME,
     "location" TEXT NOT NULL,
     "Etiquette" TEXT NOT NULL,
     "userId" TEXT NOT NULL,

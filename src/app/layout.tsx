@@ -20,7 +20,6 @@ export default async function RootLayout({
 }>) {
     const session = await auth()
 
-
     return (
         <html lang="en">
         <body className={`antialiased flex flex-col h-screen p-2`} >
