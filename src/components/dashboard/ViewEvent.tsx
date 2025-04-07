@@ -1,5 +1,8 @@
 'use client';
 import type {Event} from "@prisma/client";
+import {Button} from "primereact/button";
+import {useActionState, useEffect} from "react";
+import {deleteEvent} from "@/actions/event";
 
 interface ViewEventProps {
     event: Event | null;
@@ -7,6 +10,15 @@ interface ViewEventProps {
     className?: string;
 }
 export default function ViewEvent({event, onClose, className}: ViewEventProps) {
+    const [formState, action, isPending] = useActionState(deleteEvent.bind(null, event?.id || ''), {
+        errors: {}
+    });
+
+    useEffect(() => {
+        if(!isPending && formState.message) {
+            onClose();
+        }
+    }, [formState, isPending, onClose]);
     if(event) {
         return (
             <div className={`${className}`}>
@@ -31,6 +43,12 @@ export default function ViewEvent({event, onClose, className}: ViewEventProps) {
                             )
                         }
                     </div>
+                    <form action={action}>
+                        <Button label={isPending ? 'Processing...' : 'Delete Event'} severity="danger" className="w-full" type="submit" icon="pi pi-trash" disabled={isPending} />
+                        {formState.errors?._form && (
+                            <small className="text-red-500">{formState.errors._form.join(', ')}</small>
+                        )}
+                    </form>
                 </div>
 
             </div>

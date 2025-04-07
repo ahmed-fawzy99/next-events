@@ -40,7 +40,7 @@ export async function createEvent(
         title: z.string().min(3),
         description: z.string().min(10),
         date: z.array(z.date()),
-        location: z.string().min(3),
+        location: z.string().min(2),
         color: z.string(),
     })
 
@@ -115,7 +115,7 @@ export async function editEvent(
         title: z.string().min(3),
         description: z.string().min(10),
         date: z.array(z.date()),
-        location: z.string().min(3),
+        location: z.string().min(2),
         color: z.string(),
     })
 
@@ -177,6 +177,44 @@ export async function editEvent(
     };
 }
 
+export async function deleteEvent(
+    eventId: string,
+    // formState: CreateNewEventFormState,
+    // formData: FormData
+): Promise<CreateNewEventFormState>
+{
+    const session = await auth();
+    if (!session?.user?.id)
+        return {errors: {_form: ['You must be logged in to delete an event']}};
+
+    try {
+        await prisma.event.delete({
+            where: {
+                id: eventId,
+            },
+        });
+    } catch (error) {
+        if (error instanceof Error) {
+            return {
+                errors: {_form: [error.message]},
+            };
+        } else {
+            return {
+                errors: {
+                    _form: ['An unknown error occurred. Please try again.'],
+                },
+            }
+        }
+    }
+
+    revalidatePath(`/dashboard`);
+
+    return {
+        errors: {},
+        message: 'Event deleted successfully',
+    };
+}
+
 
 export async function getMyEvents(): Promise<Event[]> {
     const session = await auth();
@@ -188,7 +226,7 @@ export async function getMyEvents(): Promise<Event[]> {
             userId: session.user.id ,
         },
         orderBy: {
-            start: 'asc',
+            start: 'desc',
         },
     });
 }

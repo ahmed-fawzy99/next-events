@@ -17,6 +17,22 @@ export default function FormEtiquetteText({defaultValue, errors}: {defaultValue?
                 readOnly
             />
 
+            <div className="hidden">
+                <div className="bg-blue-500"/>
+                <div className="bg-yellow-500"/>
+                <div className="bg-green-500"/>
+                <div className="bg-red-500"/>
+                <div className="bg-purple-500"/>
+                <div className="bg-orange-500"/>
+                <div className="text-blue-500"/>
+                <div className="text-yellow-500"/>
+                <div className="text-green-500"/>
+                <div className="text-red-500"/>
+                <div className="text-purple-500"/>
+                <div className="text-orange-500"/>
+            </div>
+
+
             <div className="flex gap-2">
                 {colors.map((color) => (
                     <button
