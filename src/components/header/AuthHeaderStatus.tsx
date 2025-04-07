@@ -12,8 +12,8 @@ export default function AuthHeaderStatus() {
         authContent = (
             <div className="flex gap-2 items-center">
                 <Button link onClick={() => signOut({ redirectTo: "/", redirect: true })} label="Sign Out" icon="pi pi-sign-out" className="!text-[var(--text-color)]"/>
-                <div className="max-w-10 rounded-full overflow-hidden flex items-center">
-                    <Avatar image={session.user.image || ""} shape="circle"/>
+                <div className="w-10 rounded-full overflow-hidden flex items-center">
+                    <Avatar image={session.user.image || ""} shape="circle" style={{ aspectRatio: 1/1 }}/>
                 </div>
             </div>
         )

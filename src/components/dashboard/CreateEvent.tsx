@@ -1,5 +1,5 @@
 'use client';
-import {createEvent} from "@/actions/event";
+import {createEvent, editEvent} from "@/actions/event";
 import FormInputText from "@/components/form/FormInputText";
 import FormInputTextArea from "@/components/form/FormInputTextArea";
 import {Button} from "primereact/button";
@@ -7,26 +7,57 @@ import FormInputDateRange from "@/components/form/FormInputDateRange";
 import FormEtiquetteText from "@/components/form/FormEtiquetteText";
 import {useActionState, useEffect, useState} from "react";
 import Swal from 'sweetalert2'
+import type {Event} from "@prisma/client";
 
-export default function CreateEvent({mode = "create"}: {mode?: "create" | "edit"}) {
+interface CreateEventProps {
+    mode?: "create" | "edit";
+    event?: Event | null;
+    onEdit?: () => void;
+}
+
+export default function CreateEvent({mode = "create", event, onEdit}: CreateEventProps) {
+    const isEditMode = mode === "edit";
     const actionText = `${mode.charAt(0).toUpperCase() + mode.slice(1)} Event`
     const [dates, setDates] = useState<(Date | null)[] | null>(null);
 
-    const [formState, action, isPending] = useActionState(createEvent.bind(null, dates), {
+    const actionFn = isEditMode ? editEvent.bind(null, event?.id || '', dates,) : createEvent.bind(null, dates);
+    const [formState, action, isPending] = useActionState(actionFn, {
         errors: {}
     });
+
+    if (isEditMode && event) {
+        formState.values = {
+            title: event.title,
+            description: event.description,
+            date: [new Date(event.start), event.end ? new Date(event.end) : null],
+            location: event.location,
+            color: event.Etiquette
+        };
+    }
+
+    useEffect(() => {
+        if (isEditMode && event) {
+            setDates([
+                new Date(event.start),
+                event.end ? new Date(event.end) : null
+            ]);
+        }
+    }, [isEditMode, event]);
 
     useEffect(() => {
         if(!isPending && formState.message) { // Handle success
             Swal.fire({
                 icon: 'success',
-                title: 'Your event has been created',
+                title: isEditMode ? 'Event updated successfully' : 'Event created successfully',
                 toast: true,
                 position: 'bottom-end',
                 showConfirmButton: false,
                 timer: 3000,
                 theme: 'dark',
             });
+            if (isEditMode && onEdit) {
+                onEdit();
+            }
         } else { // Error
             setDates(formState.values?.date ?? null);
         }

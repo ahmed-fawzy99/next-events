@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+'use client';
+import React, {useEffect, useState} from "react";
 import { Calendar } from 'primereact/calendar';
 import type {Event} from "@prisma/client";
 
 interface EventCalendarProps {
-    numberOfMonths?: number;
     myEvents?: Event[];
 }
 
-export  default function EventCalendar({numberOfMonths = 2, myEvents}: EventCalendarProps) {
+export  default function EventCalendar({myEvents}: EventCalendarProps) {
     const [date, setDate] = useState<Date|null>(null);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setIsMobile(window.innerWidth <= 640); // Tailwind sm breakpoint
+        }
+    }, []);
 
     const dateTemplate = (date: { day: number, month: number, year: number }) => {
         if (!myEvents || myEvents.length === 0) {
@@ -40,7 +47,7 @@ export  default function EventCalendar({numberOfMonths = 2, myEvents}: EventCale
 
     return (
         <div className="!w-full">
-            <Calendar inline numberOfMonths={ numberOfMonths }
+            <Calendar inline numberOfMonths={ isMobile ? 1 : 2 }
                       className="!w-full" value={date} onChange={(e) => setDate(e.value ?? null)} dateTemplate={dateTemplate} />
         </div>
     )

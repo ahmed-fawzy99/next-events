@@ -9,7 +9,7 @@ interface ViewEventProps {
 export default function ViewEvent({event, onClose, className}: ViewEventProps) {
     if(event) {
         return (
-            <div className={className}>
+            <div className={`${className}`}>
                 <div className="flex justify-between items-center">
                     <h2 className="!mx-0 mb-2">Event <span className="italic">{event?.title}</span></h2>
                     <span className="pi pi-times cursor-pointer" onClick={() => onClose()}/>
