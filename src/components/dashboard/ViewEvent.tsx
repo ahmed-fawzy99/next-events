@@ -16,6 +16,7 @@ export default function ViewEvent({event, onClose, className}: ViewEventProps) {
 
     useEffect(() => {
         if(!isPending && formState.message) {
+            formState.message = '';
             onClose();
         }
     }, [formState, isPending, onClose]);

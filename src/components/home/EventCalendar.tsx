@@ -37,7 +37,7 @@ export  default function EventCalendar({myEvents}: EventCalendarProps) {
             const eventEtiquette = eventsForTheDay[0].Etiquette; // Get the Etiquette of the first event
             return (
                 <strong>
-                    {date.day} <sup className={`text-${eventEtiquette}-500`}>({eventsForTheDay.length})</sup>
+                    {date.day} <sup className={`text-${eventEtiquette}-500 text-xs`}>{eventsForTheDay.length}</sup>
                 </strong>
             );
         }
