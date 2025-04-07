@@ -19,9 +19,9 @@ export default function AuthHeaderStatus() {
         )
     } else {
         authContent = (
-            <Link href="/auth" className="p-button  font-bold flex gap-2 items-center font-semibold">
-            <span className="pi pi-sign-in"/>
-            <span>Sign In / Sign Up</span>
+            <Link href="/auth" className="p-button font-bold flex gap-2 items-center font-semibold">
+            <span className="pi pi-sign-in !hidden sm:!block"/>
+            <span>Sign In</span>
         </Link>
         )
     }

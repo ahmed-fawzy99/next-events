@@ -1,26 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Event Calendar App
+
+A modern event planning application built with Next.js that allows users to create, manage, and schedule events.
+
+## Features
+
+- User authentication via OAuth (GitHub and Google)
+- Create and manage events with titles, descriptions, date ranges, and color-coded labels
+- Calendar visualization of events
+- Personal dashboard to track your events
+
+## Tech Stack
+
+- Next.js 15.2.4 with React 19
+- NextAuth.js for authentication
+- PostgreSQL with Prisma ORM
+- TailwindCSS and PrimeReact for UI components
+- TypeScript for type safety
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
-## Docker
-
+Open `.env` and set the prisma DB URL to your PostgreSQL database. After that, run the following commands to set up your database:
 ```bash
-
-docker build -t nextjs-app .
-
-# Run the container
-docker run -d --name nextjs-app -p 3000:3000 nextjs-app
-
+# Generate Prisma client
+npx prisma generate
+# Run migrations
+npx prisma migrate dev --name init
 ```
+
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+

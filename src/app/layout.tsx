@@ -22,16 +22,16 @@ export default async function RootLayout({
 
     return (
         <html lang="en">
-        <body className={`antialiased flex flex-col h-screen p-2`} >
+        <body className={`antialiased flex flex-col min-h-screen p-2`} >
             <SessionProvider session={session}>
                 <PrimeReactProvider>
                     <NavMenu/>
-                    <div className="h-full container mx-auto">
+                    <div className="h-full container mx-auto flex-grow">
                         {children}
                     </div>
                 </PrimeReactProvider>
             </SessionProvider>
-            <Footer />
+            <Footer/>
         </body>
         </html>
     );
