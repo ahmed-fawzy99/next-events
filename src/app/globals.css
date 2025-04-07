@@ -6,14 +6,22 @@
     --primary-color: #7654d4;
 }
 
-.container {
+/*.container {*/
     /*max-width: 960px;*/
-}
+/*}*/
 
 .content-box {
     @apply px-4 py-2 bg-[var(--surface-card)] border-2 border-[var(--surface-border)] rounded-xl
 }
 
-.t {
-    @apply h-10 bg-red-500 w-full
+h1 {
+    @apply text-xl font-semibold text-[var(--text-color)] ms-2
+}
+
+.pv-form-input {
+    @apply flex flex-col w-full
+}
+
+.label {
+    cursor: default ;
 }

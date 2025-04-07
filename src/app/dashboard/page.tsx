@@ -2,6 +2,8 @@
 import {redirect} from "next/navigation";
 import { useSession } from "next-auth/react"
 import {useState} from "react";
+import CreateEvent from "@/components/dashboard/CreateEvent";
+import EventCalendar from "@/components/home/EventCalendar";
 
 // interface Event {
 //     id: number;
@@ -11,11 +13,9 @@ import {useState} from "react";
 
 export default function Dashboard() {
     const { data: session } = useSession()
-
     if (!session?.user?.email) {
         redirect('/auth')
     }
-
     const [selectedStatus, setSelectedStatus] = useState(false);
 
     return (
@@ -35,14 +35,14 @@ export default function Dashboard() {
                         View
                     </div>
                     <div className={`content-box col-span-${selectedStatus ? '1' : '2'}`}>
-                        Create: {selectedStatus ? '1' : '2'}
+                        <CreateEvent mode="create"/>
                     </div>
                 </div>
             </section>
 
             <section className="flex h-full">
                 <div className="content-box w-full">
-                    Calendar Goes Here...
+                    <EventCalendar />
                 </div>
             </section>
         </div>
