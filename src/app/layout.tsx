@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { PrimeReactProvider } from 'primereact/api';
 import NavMenu from "@/components/header/NavMenu";
-import {auth} from "@/auth";
 import SessionProvider from "@/providers/SessionProvider";
 import Footer from "@/components/footer/Footer";
 
