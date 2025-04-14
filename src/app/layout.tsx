@@ -18,12 +18,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-    const session = await auth()
-
     return (
         <html lang="en">
         <body className={`antialiased flex flex-col min-h-screen p-2`} >
-            <SessionProvider session={session}>
+            <SessionProvider>
                 <PrimeReactProvider>
                     <NavMenu/>
                     <div className="h-full container mx-auto flex-grow">
